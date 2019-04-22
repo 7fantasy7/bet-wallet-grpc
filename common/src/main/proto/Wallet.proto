@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package by.botyanov.wallet.server.model;
+
+//option java_package = "by.botyanov.wallet.server.model";
+option java_multiple_files = true;
+option java_generic_services = true;
+
+enum Currency {
+    EUR = 0;
+    USD = 1;
+    GBP = 2;
+}
+
+message Deposit {
+    int64 userId = 1;
+    double amount = 2;
+    Currency currency = 3;
+}
+
+message Withdraw {
+    int64 userId = 1;
+    double amount = 2;
+    Currency currency = 3;
+}
+
+message Balance {
+    int64 userId = 1;
+}
+
+message BalanceResponse {
+    map<string, double> balance = 1;
+}
+
+message Empty {
+}
+
+service WalletService {
+    rpc deposit (Deposit) returns (Empty);
+
+    rpc withdraw (Withdraw) returns (Empty);
+
+    rpc balance (Balance) returns (BalanceResponse);
+}

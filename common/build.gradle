@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.8"
+    }
+}
+
+apply plugin: 'com.google.protobuf'
+
+build.dependsOn 'generateProto'
+
+group = 'by.botyanov.wallet'
+version = '1-0-SNAPSHOT'
+sourceCompatibility = '12'
+
+repositories {
+    mavenCentral()
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.5.1'
+        generatedFilesBaseDir = "$buildDir/generated-sources/proto"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.20.0"
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {
+                outputSubDir = "/java"
+            }
+        }
+        ofSourceSet('main').each { task ->
+            task.builtins {
+                java {
+                    outputSubDir = "/java"
+                }
+            }
+        }
+    }
+
+//    generatedFilesBaseDir = "$projectDir/src/"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
+
+    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
+}
+
+sourceSets {
+    main {
+        java.srcDirs += "$buildDir/generated-sources/proto"
+    }
+}

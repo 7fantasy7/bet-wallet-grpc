@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'by.botyanov.wallet'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "3.2.0"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
+
+    compile project(':common')
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
