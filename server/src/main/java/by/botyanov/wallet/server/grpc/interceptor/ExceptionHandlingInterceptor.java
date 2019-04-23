@@ -1,4 +1,4 @@
-package by.botyanov.wallet.server.grpc;
+package by.botyanov.wallet.server.grpc.interceptor;
 
 import io.grpc.ForwardingServerCall;
 import io.grpc.Metadata;
@@ -15,11 +15,6 @@ public class ExceptionHandlingInterceptor implements ServerInterceptor {
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> call, Metadata headers,
                                                                  ServerCallHandler<ReqT, RespT> next) {
         final ServerCall<ReqT, RespT> wrappedCall = new ForwardingServerCall.SimpleForwardingServerCall<>(call) {
-            @Override
-            public void sendMessage(RespT message) {
-                super.sendMessage(message);
-            }
-
             @Override
             public void close(Status status, Metadata trailers) {
                 //todo log

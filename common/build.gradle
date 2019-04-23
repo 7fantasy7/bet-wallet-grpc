@@ -45,18 +45,11 @@ protobuf {
             }
         }
     }
-
-//    generatedFilesBaseDir = "$projectDir/src/"
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
     compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
-
-    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
+    compile group: 'io.grpc', name: 'grpc-all', version: '1.20.0'
 }
 
 sourceSets {

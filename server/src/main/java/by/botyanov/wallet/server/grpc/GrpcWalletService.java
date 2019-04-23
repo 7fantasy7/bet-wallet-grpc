@@ -2,6 +2,7 @@ package by.botyanov.wallet.server.grpc;
 
 import by.botyanov.wallet.server.model.Balance;
 import by.botyanov.wallet.server.model.BalanceResponse;
+import by.botyanov.wallet.server.model.Currency;
 import by.botyanov.wallet.server.model.Deposit;
 import by.botyanov.wallet.server.model.Empty;
 import by.botyanov.wallet.server.model.WalletServiceGrpc;
@@ -11,8 +12,8 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.lognet.springboot.grpc.GRpcService;
 
-// todo LOGGING
-// todo create normal service. and grpc on top of it? DONE
+import java.util.Map;
+
 @GRpcService
 @RequiredArgsConstructor
 public class GrpcWalletService extends WalletServiceGrpc.WalletServiceImplBase {
@@ -44,8 +45,13 @@ public class GrpcWalletService extends WalletServiceGrpc.WalletServiceImplBase {
     @Override
     public void balance(Balance request, StreamObserver<BalanceResponse> responseObserver) {
         try {
-            final BalanceResponse balance = walletService.balance(request.getUserId());
-            responseObserver.onNext(balance);
+            final Map<Currency, Double> balance = walletService.balance(request.getUserId());
+
+            final BalanceResponse.Builder builder = BalanceResponse.newBuilder();
+            for (Map.Entry<Currency, Double> currencyToBalance : balance.entrySet()) {
+                builder.putBalance(currencyToBalance.getKey().toString(), currencyToBalance.getValue());
+            }
+            responseObserver.onNext(builder.build());
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);

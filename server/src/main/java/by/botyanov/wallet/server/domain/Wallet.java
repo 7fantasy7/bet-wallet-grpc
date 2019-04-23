@@ -3,6 +3,7 @@ package by.botyanov.wallet.server.domain;
 import by.botyanov.wallet.server.model.Currency;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "wallet")
+@SQLInsert(sql = "INSERT INTO wallet(amount, currency, user_id) VALUES (?, ?, ?) " +
+        "ON CONFLICT (user_id, currency) DO UPDATE SET amount = wallet.amount + EXCLUDED.amount")
 public class Wallet implements Serializable {
 
     @Id
@@ -28,6 +31,8 @@ public class Wallet implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
+    // Todo maybe should better use BigDecimal, but need an approach to send via gRPC.
+    // smth like: https://github.com/googleapis/googleapis/blob/master/google/type/money.proto
     @Column(name = "amount")
     private double amount;
 

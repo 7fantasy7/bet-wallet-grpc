@@ -40,9 +40,9 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ContextConfiguration(classes = ServerApplication.class,
-        initializers = {HelloWorldServerTest.Initializer.class, ConfigFileApplicationContextInitializer.class})
+        initializers = {WalletServerTest.Initializer.class, ConfigFileApplicationContextInitializer.class})
 @Sql("/schema.sql")
-public class HelloWorldServerTest {
+public class WalletServerTest {
 
     @ClassRule
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:11.1");
@@ -71,11 +71,10 @@ public class HelloWorldServerTest {
 
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void walletServiceBalance() {
+    public void testWalletService() {
         final WalletServiceGrpc.WalletServiceBlockingStub walletService =
                 WalletServiceGrpc.newBlockingStub(inProcessChannel);
 
-        // todo variable name
         final Runnable withdraw200USD = () -> walletService.withdraw(Withdraw.newBuilder()
                 .setCurrency(USD).setAmount(200).setUserId(1).build());
 

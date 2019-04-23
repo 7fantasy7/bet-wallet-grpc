@@ -1,12 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.8"
-    }
-}
-
 plugins {
     id 'org.springframework.boot' version '2.1.4.RELEASE'
     id 'java'
@@ -14,7 +5,6 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.google.protobuf'
 
 group = 'by.botyanov.wallet'
 version = '1-0-SNAPSHOT'
@@ -31,14 +21,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
-
     compile project(':common')
 
+    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    compileOnly 'org.projectlombok:lombok'
-//    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-//    annotationProcessor 'org.projectlombok:lombok'
+
+    compile group: 'p6spy', name: 'p6spy', version: '3.8.2'
 
     runtimeOnly 'org.postgresql:postgresql'
 

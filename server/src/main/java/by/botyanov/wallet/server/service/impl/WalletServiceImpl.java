@@ -2,7 +2,6 @@ package by.botyanov.wallet.server.service.impl;
 
 import by.botyanov.wallet.server.domain.Wallet;
 import by.botyanov.wallet.server.exception.WalletException;
-import by.botyanov.wallet.server.model.BalanceResponse;
 import by.botyanov.wallet.server.model.Currency;
 import by.botyanov.wallet.server.repository.WalletRepository;
 import by.botyanov.wallet.server.service.WalletService;
@@ -11,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static by.botyanov.wallet.common.ErrorCodes.INSUFFICIENT_FUNDS;
 import static by.botyanov.wallet.common.ErrorCodes.NOT_POSITIVE_AMOUNT;
@@ -63,18 +64,13 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public BalanceResponse balance(long userId) { // todo not gRPC response class
+    public Map<Currency, Double> balance(long userId) {
         final List<Wallet> userWallets = walletRepository.findByUserId(userId);
         if (userWallets.isEmpty()) {
             throw new WalletException(INSUFFICIENT_FUNDS);
         }
 
-        final BalanceResponse.Builder builder = BalanceResponse.newBuilder();
-        for (Wallet userWallet : userWallets) {
-            builder.putBalance(userWallet.getCurrency().toString(), userWallet.getAmount());
-        }
-
-        return builder.build();
+        return userWallets.stream().collect(Collectors.toMap(Wallet::getCurrency, Wallet::getAmount));
     }
 
 }

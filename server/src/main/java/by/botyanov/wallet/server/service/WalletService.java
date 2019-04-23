@@ -1,6 +1,6 @@
 package by.botyanov.wallet.server.service;
 
-import by.botyanov.wallet.server.model.BalanceResponse;
+import java.util.Map;
 
 public interface WalletService {
 
@@ -8,6 +8,6 @@ public interface WalletService {
 
     void withdraw(long userId, by.botyanov.wallet.server.model.Currency currency, double amount);
 
-    BalanceResponse balance(long userId);
+    Map<by.botyanov.wallet.server.model.Currency, Double> balance(long userId);
 
 }

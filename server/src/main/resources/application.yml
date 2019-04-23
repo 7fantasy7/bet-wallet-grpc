@@ -1,9 +1,11 @@
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
+    #    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:postgresql://localhost:5432/test
     username: postgres
     password: postgres
+    initialization-mode: always # todo remove after Docker
   jpa:
     properties:
       hibernate:
@@ -12,6 +14,13 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    hibernate:
-      ddl-auto: create-drop
     open-in-view: false
+    database: postgresql
+
+
+log4j:
+  logger:
+    org:
+      hibernate:
+        persister:
+          entity: DEBUG
