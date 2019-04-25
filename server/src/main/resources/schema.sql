@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS wallet;
+
 CREATE TABLE wallet(
     id serial,
     user_id bigint,

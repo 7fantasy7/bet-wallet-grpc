@@ -8,12 +8,13 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'by.botyanov.wallet'
 version = '1-0-SNAPSHOT'
-sourceCompatibility = '12'
+sourceCompatibility = '11'
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    generateLombokConfig.enabled = false
 }
 
 repositories {
@@ -26,7 +27,7 @@ dependencies {
     implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    compile group: 'p6spy', name: 'p6spy', version: '3.8.2'
+//    compile group: 'p6spy', name: 'p6spy', version: '3.8.2'
 
     runtimeOnly 'org.postgresql:postgresql'
 

@@ -1,0 +1,35 @@
+version: '3'
+services:
+  wallet-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 'wallet-server'
+    restart: always
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./:/wallet
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pgsql:5432/wallet
+      SPRING_DATASOURCE_USERNAME: wallet
+      SPRING_DATASOURCE_PASSWORD: w@11Et!
+    depends_on:
+      - pgsql
+  pgsql:
+    image: sameersbn/postgresql:10
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - DEBUG=false
+
+      - DB_USER=wallet
+      - DB_PASS=w@11Et!
+      - DB_NAME=wallet
+    volumes:
+      - db_data:/var/lib/postgresql
+#      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
