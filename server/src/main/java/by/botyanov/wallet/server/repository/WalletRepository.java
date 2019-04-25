@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
-    // todo test if it works
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Wallet> findByUserIdAndCurrency(Long userId, Currency currency);
 

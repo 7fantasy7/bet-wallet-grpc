@@ -6,9 +6,11 @@ import by.botyanov.wallet.client.event.impl.WithdrawEvent;
 import by.botyanov.wallet.server.model.WalletServiceGrpc;
 import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Callable;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ClientEmulator implements Callable<Void> {
 
@@ -19,7 +21,8 @@ public class ClientEmulator implements Callable<Void> {
     @Override
     public Void call() {
         for (int i = 0; i < rounds; i++) {
-            //todo log + thread id
+            log.debug("Starting round {} of {} for user[id={}] in thread {}",
+                    i, rounds, userId, Thread.currentThread().getName());
             final Round round = Round.random();
 
             round.getEvents().forEach(event -> {
@@ -32,15 +35,13 @@ public class ClientEmulator implements Callable<Void> {
                     } else if (event instanceof WithdrawEvent) {
                         walletService.withdraw((by.botyanov.wallet.server.model.Withdraw) request);
                     }
-                    System.out.println("[" + Thread.currentThread().getName() + "]: success :D");
                 } catch (StatusRuntimeException e) {
-                    System.out.println(e.getStatus().getCode() + ":" + e.getStatus().getDescription());
+                    log.error("Client failed request {} for user[id={}] with exception {}", event, userId, e.getStatus());
                 }
             });
-
         }
 
-        System.out.println("Client finish on:" + System.nanoTime());
+        log.info("Client {} finished for user[id={}] on {}", Thread.currentThread().getName(), userId, System.nanoTime());
 
         return null;
     }

@@ -3,7 +3,7 @@ plugins {
     id 'java'
     id "io.freefair.lombok" version "3.2.0"
 }
-
+ещвщ
 apply plugin: 'io.spring.dependency-management'
 
 group = 'by.botyanov.wallet'

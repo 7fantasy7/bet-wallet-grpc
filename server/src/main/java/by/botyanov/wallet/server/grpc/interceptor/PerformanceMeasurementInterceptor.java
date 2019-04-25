@@ -5,11 +5,13 @@ import io.grpc.Metadata;
 import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcGlobalInterceptor;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 @GRpcGlobalInterceptor
 public class PerformanceMeasurementInterceptor implements ServerInterceptor {
 
@@ -33,7 +35,7 @@ public class PerformanceMeasurementInterceptor implements ServerInterceptor {
     public void logRequestCount() {
         final int reqs = counter.get();
         if (reqs > 0) {
-            System.out.println("Reqs per second: " + reqs);
+            log.info("Reqs per second: {}", reqs);
             counter.set(0);
         }
     }

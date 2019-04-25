@@ -3,7 +3,9 @@ package by.botyanov.wallet.client.event.impl;
 import by.botyanov.wallet.server.model.Currency;
 import by.botyanov.wallet.server.model.Deposit;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @RequiredArgsConstructor
 public class DepositEvent implements Event<Deposit> {
 

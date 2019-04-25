@@ -6,8 +6,10 @@ import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.grpc.Status;
+import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcGlobalInterceptor;
 
+@Slf4j
 @GRpcGlobalInterceptor
 public class ExceptionHandlingInterceptor implements ServerInterceptor {
 
@@ -17,8 +19,8 @@ public class ExceptionHandlingInterceptor implements ServerInterceptor {
         final ServerCall<ReqT, RespT> wrappedCall = new ForwardingServerCall.SimpleForwardingServerCall<>(call) {
             @Override
             public void close(Status status, Metadata trailers) {
-                //todo log
                 if (status.getCode() == Status.Code.UNKNOWN && status.getCause() != null) {
+                    log.error(status.getCause().toString());
                     Throwable e = status.getCause();
                     status = Status.INTERNAL.withDescription(e.getMessage()).withCause(e);
                 }

@@ -6,6 +6,7 @@ import by.botyanov.wallet.server.model.Currency;
 import by.botyanov.wallet.server.repository.WalletRepository;
 import by.botyanov.wallet.server.service.WalletService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,6 +19,7 @@ import static by.botyanov.wallet.common.ErrorCodes.INSUFFICIENT_FUNDS;
 import static by.botyanov.wallet.common.ErrorCodes.NOT_POSITIVE_AMOUNT;
 import static by.botyanov.wallet.common.ErrorCodes.UNKNOWN_CURRENCY;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,6 +35,8 @@ public class WalletServiceImpl implements WalletService {
         if (amount <= 0) {
             throw new WalletException(NOT_POSITIVE_AMOUNT);
         }
+
+        log.debug("User {} makes deposit of {}{}", userId, currency, amount);
 
         final Wallet wallet = walletRepository.findByUserIdAndCurrency(userId, currency)
                 .orElseGet(() -> new Wallet().setUserId(userId).setCurrency(currency));
@@ -56,6 +60,8 @@ public class WalletServiceImpl implements WalletService {
                 throw new WalletException(INSUFFICIENT_FUNDS);
             }
 
+            log.debug("User {} withdraws {}{}", userId, currency, amount);
+
             wallet.setAmount(wallet.getAmount() - amount);
             walletRepository.save(wallet);
         }, () -> {
@@ -69,6 +75,8 @@ public class WalletServiceImpl implements WalletService {
         if (userWallets.isEmpty()) {
             throw new WalletException(INSUFFICIENT_FUNDS);
         }
+
+        log.debug("User {} checks balance", userId);
 
         return userWallets.stream().collect(Collectors.toMap(Wallet::getCurrency, Wallet::getAmount));
     }

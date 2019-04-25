@@ -5,6 +5,7 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.Banner;
@@ -20,6 +21,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 // Todo create service per thread? create channel per thread?
+@Slf4j
 @SpringBootApplication
 public class ClientApplication implements ApplicationRunner {
 
@@ -76,7 +78,7 @@ public class ClientApplication implements ApplicationRunner {
 
         final List<Future<Void>> futures = executorService.invokeAll(clients);
 
-        System.out.println("Done. Time elapsed: " + stopwatch.elapsed(TimeUnit.SECONDS) + " seconds.");
+        log.info("Done. Time elapsed: {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
         System.exit(0);
     }
