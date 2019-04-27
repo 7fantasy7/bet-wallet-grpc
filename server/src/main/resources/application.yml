@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
+    url: jdbc:postgresql://localhost:5432/wallet
     username: postgres
     password: postgres
     initialization-mode: always
@@ -16,9 +16,7 @@ spring:
     open-in-view: false
     database: postgresql
 
-log4j:
-  logger:
-    org:
-      hibernate:
-        persister:
-          entity: DEBUG
+#logging:
+#  level:
+#    root:
+#      OFF

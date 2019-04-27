@@ -20,7 +20,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-// Todo create service per thread? create channel per thread?
 @Slf4j
 @SpringBootApplication
 public class ClientApplication implements ApplicationRunner {

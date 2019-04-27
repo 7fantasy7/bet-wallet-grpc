@@ -3,14 +3,7 @@ plugins {
     id "io.freefair.lombok" version "3.2.0"
 }
 
-group 'by.botyanov.wallet'
 version '1.0-SNAPSHOT'
-
-sourceCompatibility = '11'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'

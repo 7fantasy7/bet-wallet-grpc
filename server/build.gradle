@@ -1,14 +1,12 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
     id 'java'
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
     id "io.freefair.lombok" version "3.2.0"
 }
-ещвщ
+
 apply plugin: 'io.spring.dependency-management'
 
-group = 'by.botyanov.wallet'
 version = '1-0-SNAPSHOT'
-sourceCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -17,17 +15,11 @@ configurations {
     generateLombokConfig.enabled = false
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compile project(':common')
 
     implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-//    compile group: 'p6spy', name: 'p6spy', version: '3.8.2'
 
     runtimeOnly 'org.postgresql:postgresql'
 

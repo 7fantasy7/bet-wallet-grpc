@@ -1,21 +1,12 @@
-plugins {
-    id 'java'
-}
-
 group 'by.botyanov.wallet'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
 allprojects {
+    repositories {
+        mavenCentral()
+    }
+    group 'by.botyanov.wallet'
+
     apply plugin: 'java'
     sourceCompatibility = '11'
     targetCompatibility = '11'

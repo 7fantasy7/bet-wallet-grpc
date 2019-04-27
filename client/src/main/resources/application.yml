@@ -1,3 +1,8 @@
 spring:
   main:
     web-environment: false
+
+#logging:
+#  level:
+#    root:
+#      OFF

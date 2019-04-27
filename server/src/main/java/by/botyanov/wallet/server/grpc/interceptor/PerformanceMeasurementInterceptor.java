@@ -33,10 +33,9 @@ public class PerformanceMeasurementInterceptor implements ServerInterceptor {
 
     @Scheduled(fixedDelay = 1000)
     public void logRequestCount() {
-        final int reqs = counter.get();
+        final int reqs = counter.getAndUpdate((i) -> 0);
         if (reqs > 0) {
             log.info("Reqs per second: {}", reqs);
-            counter.set(0);
         }
     }
 
