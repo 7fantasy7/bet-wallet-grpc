@@ -1,5 +1,2 @@
 rootProject.name = 'wallet'
-include 'client'
-include 'server'
-include 'common'
-
+include 'client', 'server', 'common'

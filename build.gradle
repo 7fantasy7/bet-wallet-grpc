@@ -1,7 +1,11 @@
 group 'by.botyanov.wallet'
 version '1.0-SNAPSHOT'
 
-allprojects {
+subprojects {
+    ext {
+        grpcStarterVersion = '3.2.2'
+    }
+
     repositories {
         mavenCentral()
     }

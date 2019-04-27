@@ -8,8 +8,8 @@ import by.botyanov.wallet.server.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -69,6 +69,7 @@ public class WalletServiceImpl implements WalletService {
         });
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<Currency, Double> balance(long userId) {
         final List<Wallet> userWallets = walletRepository.findByUserId(userId);

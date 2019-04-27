@@ -1,7 +1,6 @@
 plugins {
-    id 'java'
     id 'org.springframework.boot' version '2.1.4.RELEASE'
-    id "io.freefair.lombok" version "3.2.0"
+    id 'io.freefair.lombok' version '3.2.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -15,16 +14,20 @@ configurations {
     generateLombokConfig.enabled = false
 }
 
+ext {
+    testContainersVersion = '1.11.2'
+}
+
 dependencies {
     compile project(':common')
 
-    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.2'
+    implementation "io.github.lognet:grpc-spring-boot-starter:${grpcStarterVersion}"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     runtimeOnly 'org.postgresql:postgresql'
 
-    testCompile "org.testcontainers:testcontainers:1.11.2"
-    testCompile "org.testcontainers:postgresql:1.11.2"
+    testCompile "org.testcontainers:testcontainers:${testContainersVersion}"
+    testCompile "org.testcontainers:postgresql:${testContainersVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
