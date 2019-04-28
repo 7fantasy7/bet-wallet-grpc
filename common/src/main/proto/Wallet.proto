@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package by.botyanov.wallet.server.model;
 
-//option java_package = "by.botyanov.wallet.server.model";
 option java_multiple_files = true;
 option java_generic_services = true;
 

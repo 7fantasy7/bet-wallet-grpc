@@ -35,6 +35,7 @@ public class ClientEmulator implements Callable<Void> {
                     } else if (event instanceof WithdrawEvent) {
                         walletService.withdraw((by.botyanov.wallet.server.model.Withdraw) request);
                     }
+                    log.info("Client successfully sent request {} for user[id={}]", event, userId);
                 } catch (StatusRuntimeException e) {
                     log.error("Client failed request {} for user[id={}] with exception {}", event, userId, e.getStatus());
                 }

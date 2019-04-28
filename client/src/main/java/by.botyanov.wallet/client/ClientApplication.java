@@ -12,7 +12,6 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication
 public class ClientApplication implements ApplicationRunner {
 
+    private static final String SERVER_ADDRESS_OPT = "server_address";
     private static final String USERS_OPT = "users";
     private static final String CONCURRENT_THREADS_PER_USER_OPT = "concurrent_threads_per_user";
     private static final String ROUNDS_PER_THREAD = "rounds_per_thread";
@@ -31,17 +31,12 @@ public class ClientApplication implements ApplicationRunner {
     private ManagedChannel managedChannel;
     private WalletServiceGrpc.WalletServiceBlockingStub walletService;
 
-    @PostConstruct
-    private void init() {
-        managedChannel = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext().build();
-
-        walletService = by.botyanov.wallet.server.model.WalletServiceGrpc.newBlockingStub(managedChannel);
-    }
-
     @PreDestroy
     public void shutdown() throws InterruptedException {
-        managedChannel.shutdown();
-        managedChannel.awaitTermination(10, TimeUnit.SECONDS);
+        if (managedChannel != null) {
+            managedChannel.shutdown();
+            managedChannel.awaitTermination(10, TimeUnit.SECONDS);
+        }
     }
 
     public static void main(String[] args) {
@@ -57,6 +52,10 @@ public class ClientApplication implements ApplicationRunner {
             throw new Exception(USERS_OPT + ", " + CONCURRENT_THREADS_PER_USER_OPT + ", " + ROUNDS_PER_THREAD
                     + " options are required to run");
         }
+
+        final String serverAddress = args.getOptionValues(SERVER_ADDRESS_OPT).get(0);
+        managedChannel = ManagedChannelBuilder.forAddress(serverAddress, 6565).usePlaintext().build();
+        walletService = by.botyanov.wallet.server.model.WalletServiceGrpc.newBlockingStub(managedChannel);
 
         final Integer usersCount = Integer.valueOf(args.getOptionValues(USERS_OPT).get(0));
         final Integer concurrentThreads = Integer.valueOf(args.getOptionValues(CONCURRENT_THREADS_PER_USER_OPT).get(0));

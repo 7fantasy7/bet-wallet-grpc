@@ -3,11 +3,11 @@ services:
   wallet-server:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.server
     image: 'wallet-server'
     restart: always
     ports:
-      - '8080:8080'
+      - '6565:6565'
     volumes:
       - ./:/wallet
     environment:
@@ -16,6 +16,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: w@11Et!
     depends_on:
       - pgsql
+    networks:
+      walletnet:
+        aliases:
+          - walletserver
   pgsql:
     image: sameersbn/postgresql:10
     ports:
@@ -23,13 +27,19 @@ services:
     restart: always
     environment:
       - DEBUG=false
-
       - DB_USER=wallet
       - DB_PASS=w@11Et!
       - DB_NAME=wallet
     volumes:
       - db_data:/var/lib/postgresql
-#      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      walletnet:
+        aliases:
+          - pgsql
 
 volumes:
   db_data:
+
+networks:
+  walletnet:
+    external: true
